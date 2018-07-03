@@ -50,34 +50,20 @@ class Spliter(object):
 
         self.all_Primary_mapping = self.map_categories(list(self.all_Primary_categories))
         self.all_Secondary_mapping = self.map_categories(list(self.all_Secondary_categories))
-        #
-        # print(self.all_Primary_mapping)
-        # print(self.all_Secondary_mapping)
 
         for Primary, Secondary in zip(list(self.all_Primary_categories), list(self.all_Secondary_categories)):
             start_map[Secondary] = Primary
 
         main_map = {}
-        # print(start_map)
         # opposite sides key = Secondary category, value  = Primary category
         for start_key, start_value in start_map.items():
-            # print(str(self.all_Primary_mapping[start_value]) + "-----" + (str(self.all_Secondary_mapping[start_key])))
             main_map[(str(self.all_Secondary_mapping[start_key]))] = str(self.all_Primary_mapping[start_value])
 
-        # print(main_map)
         y_list = self.mapping_data[self.mapping_data.columns[-1]]
         y_tag = []
         for y in y_list:
             y_tag.append(main_map[str(y)])
 
-        # print(list(y_list))
-        # print("len of y is: {}".format(len(y_list)))
-        # print(y_tag)
-        # print("len of y_tag is: {}".format(len(y_tag)))
-
-        self.mapping_data['y_tag'] = y_tag
-        self.mapping_data.drop(['y'], axis=1, inplace=True)
-        self.mapping_data.to_csv('Master_Data_4.csv')
 
 if __name__ == "__main__":
     inst = Spliter(file_name = 'WebData_02.csv', split=False)
