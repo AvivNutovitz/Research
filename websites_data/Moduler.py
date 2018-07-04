@@ -175,7 +175,7 @@ class Moduler(object):
         model = None
         # Initialize your cross vailidation
         # Set shuffle equals True to randomize your splits on your training data
-        kf = KFold(n_splits=self.num_folds, random_state=41, shuffle=True)
+        kf = KFold(n_splits=self.num_folds, shuffle=True)
 
         # Set up for loop to run for the number of cross vals you defined in your parameter
         for train_index, test_index in kf.split(self.X_scaled):
