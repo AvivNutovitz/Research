@@ -184,8 +184,8 @@ class Moduler(object):
 
             # This indexs your train and test data for your cross validation and sorts them
             # in random order, since we used shuffle equals True
-            X_nn_train, X_nn_test = self.X_scaled[train_index], self.y_tag[test_index]
-            y_nn_train, y_nn_test = self.X_scaled[train_index], self.y_tag[test_index]
+            X_nn_train, X_nn_test = self.X_scaled[train_index], self.X_scaled[test_index]
+            y_nn_train, y_nn_test = self.y_tag[train_index], self.y_tag[test_index]
 
             # Define your input dimension, which must equal the number of variables in your
             # training data. If it does not you will get a goofy error.
@@ -290,7 +290,7 @@ class Moduler(object):
 
 
 if __name__ == '__main__':
-    m0 = Moduler(y=1, with_visual_features=True)
+    m0 = Moduler(y=0, with_visual_features=True)
     m1 = Moduler(y=1, with_visual_features=True)
     m6 = Moduler(y=6, with_visual_features=True)
     m8 = Moduler(y=8, with_visual_features=True)
