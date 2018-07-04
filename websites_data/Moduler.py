@@ -23,8 +23,8 @@ class Moduler(object):
         self.y_for_the_model = y
         self.scoring_metric = scoring
         self.with_visual_features = with_visual_features
-        self.model = self.find_or_train_model()
         self.num_folds = num_folds
+        self.model = self.find_or_train_model()
 
     def find_or_train_model(self):
         """
@@ -51,19 +51,20 @@ class Moduler(object):
         try:
             loaded_model = None
             if self.with_visual_features:
-                # set the model file path
-                model_to_save_file_name = "dnn_model_with_visual_features_y_{}.json".format(self.y_for_the_model)
-                # set the weights file path
-                model_weights_to_save_file_name = "dnn_model_weights_with_visual_features_y_{}.h5".format(self.y_for_the_model)
+                for fold in range(1, self.num_folds + 1, 1):
+                    # set the model file path
+                    model_to_save_file_name = "dnn_model_with_visual_features_y_{}_fold_{}.json".format(self.y_for_the_model, fold)
+                    # set the weights file path
+                    model_weights_to_save_file_name = "dnn_model_weights_with_visual_features_y_{}_fold_{}.h5".format(self.y_for_the_model, fold)
 
-                # load json and create model
-                json_file = open(model_to_save_file_name, 'r')
-                loaded_model_json = json_file.read()
-                json_file.close()
-                loaded_model = model_from_json(loaded_model_json)
+                    # load json and create model
+                    json_file = open(model_to_save_file_name, 'r')
+                    loaded_model_json = json_file.read()
+                    json_file.close()
+                    loaded_model = model_from_json(loaded_model_json)
 
-                # load weights into new model
-                loaded_model.load_weights(model_weights_to_save_file_name)
+                    # load weights into new model
+                    loaded_model.load_weights(model_weights_to_save_file_name)
             else:
                 model_to_save_file_name = "logistic_regression_model_without_visual_features_y_{}.sav".format(self.y_for_the_model)
                 loaded_model = pickle.load(open(model_to_save_file_name, 'rb'))
@@ -257,27 +258,27 @@ class Moduler(object):
         # The input dimension is the number of variables you have in your data
         # The activation parameter is what kind of function you to use for your perceptron function
         # You can use a variety of different perceptron functions but relu is very common
-        model.add(Dense(output_dim=1000, input_dim=input_dim, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=1000, input_dim=input_dim, init='uniform', activation='relu'))
 
         # Adding hidden layer
-        model.add(Dense(output_dim=1000, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=1000, init='uniform', activation='relu'))
 
         # Adding hidden layer
-        model.add(Dense(output_dim=500, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=500, init='uniform', activation='relu'))
 
         # Adding hidden layer
-        model.add(Dense(output_dim=500, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=500, init='uniform', activation='relu'))
 
         # Adding hidden layer
-        model.add(Dense(output_dim=100, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=100, init='uniform', activation='relu'))
 
         # Adding hidden layer
-        model.add(Dense(output_dim=50, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=50, init='uniform', activation='relu'))
 
         # The last layer is your output layer so the number of perceptions must be equal to the
         # amount target classes your data set has.
         # documentation.
-        model.add(Dense(output_dim=1, init='uniform', activation='sigmoid'))
+        model.add(Dense(output_dim=1, init='uniform', activation='relu'))
 
         # Lastly you want to define your loss function, your optimizer and your metric for scoring.
         # This will vary based on your goals, but for a binary target this parameter configuration
@@ -289,7 +290,7 @@ class Moduler(object):
 
 
 if __name__ == '__main__':
-    m0 = Moduler(y=0, with_visual_features=True)
+    m0 = Moduler(y=1, with_visual_features=True)
     m1 = Moduler(y=1, with_visual_features=True)
     m6 = Moduler(y=6, with_visual_features=True)
     m8 = Moduler(y=8, with_visual_features=True)
